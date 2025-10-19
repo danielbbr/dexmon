@@ -1,0 +1,35 @@
+.device-section {
+  margin-bottom: 32px;
+}
+
+.device-section.highlight h2 {
+  color: #d97706;
+}
+
+.device-section h2 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.device-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.empty-message {
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .device-grid {
+    grid-template-columns: 1fr;
+  }
+}
