@@ -15,26 +15,24 @@ function Dashboard() {
   const [scanning, setScanning] = useState(false);
   const navigate = useNavigate();
 
-  const loadDevices = async () => {
+  const loadDevices = async (isScanning = false) => {
+    if (isScanning) {
+      setScanning(true);
+    } else {
+      setLoading(true);
+    }
+    
     try {
       const response = await devices.getAll();
       setDeviceData(response.data);
     } catch (error) {
       console.error('error loading devices:', error);
     } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleScan = async () => {
-    setScanning(true);
-    try {
-      const response = await devices.scan();
-      setDeviceData(response.data);
-    } catch (error) {
-      console.error('error scanning:', error);
-    } finally {
-      setScanning(false);
+      if (isScanning) {
+        setScanning(false);
+      } else {
+        setLoading(false);
+      }
     }
   };
 
@@ -63,7 +61,7 @@ function Dashboard() {
           <div className="header-actions">
             <button 
               className="scan-button" 
-              onClick={handleScan}
+              onClick={() => loadDevices(true)}
               disabled={scanning}
             >
               {scanning ? 'Scanning...' : '🔄 Refresh Network'}

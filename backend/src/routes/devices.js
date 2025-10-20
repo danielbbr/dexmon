@@ -40,14 +40,4 @@ router.post('/devices/update', authenticateToken, (req, res) => {
   }
 });
 
-router.post('/scan', authenticateToken, async (req, res) => {
-  try {
-    const devices = await monitor.getDeviceStatus();
-    res.json(devices);
-  } catch (error) {
-    console.error('scan error:', error);
-    res.status(500).json({ error: 'scan failed' });
-  }
-});
-
 export default router;

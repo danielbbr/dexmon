@@ -36,7 +36,6 @@ export const auth = {
 
 export const devices = {
   getAll: () => api.get('/devices'),
-  scan: () => api.post('/scan'),
   update: (mac, name, icon) => api.post('/devices/update', { mac, name, icon })
 };
 
