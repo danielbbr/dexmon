@@ -90,6 +90,10 @@ function DeviceCard({ device, onUpdate }) {
           <span className="detail-value">{device.mac}</span>
         </div>
         <div className="detail-row">
+          <span className="detail-label">Vendor:</span>
+          <span className="detail-value">{device.vendor || 'Unknown'}</span>
+        </div>
+        <div className="detail-row">
           <span className="detail-label">Status:</span>
           <span className={`status-badge ${device.status}`}>
             {device.status === 'online' ? '🟢 Online' : '🔴 Offline'}

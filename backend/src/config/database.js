@@ -14,6 +14,7 @@ db.exec(`
     mac_address TEXT UNIQUE NOT NULL,
     name TEXT,
     icon TEXT DEFAULT 'default',
+    vendor TEXT DEFAULT 'Unknown',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )
