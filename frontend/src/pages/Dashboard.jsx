@@ -36,6 +36,23 @@ function Dashboard() {
     }
   };
 
+  const updateDevice = (mac, name, icon) => {
+    setDeviceData(prevData => {
+      const updateDeviceInList = (deviceList) => 
+        deviceList.map(device => 
+          device.mac === mac 
+            ? { ...device, name, icon }
+            : device
+        );
+
+      return {
+        onlineKnown: updateDeviceInList(prevData.onlineKnown),
+        onlineUnknown: updateDeviceInList(prevData.onlineUnknown),
+        offlineKnown: updateDeviceInList(prevData.offlineKnown)
+      };
+    });
+  };
+
   const handleLogout = () => {
     auth.logout();
     navigate('/login');
@@ -78,6 +95,7 @@ function Dashboard() {
           title="Online - Known Devices"
           devices={deviceData.onlineKnown}
           onUpdate={loadDevices}
+          onDeviceUpdate={updateDevice}
           emptyMessage="No known devices online"
         />
 
@@ -85,6 +103,7 @@ function Dashboard() {
           title="Online - Unknown Devices"
           devices={deviceData.onlineUnknown}
           onUpdate={loadDevices}
+          onDeviceUpdate={updateDevice}
           emptyMessage="No unknown devices found"
           highlight
         />
@@ -93,6 +112,7 @@ function Dashboard() {
           title="Offline - Known Devices"
           devices={deviceData.offlineKnown}
           onUpdate={loadDevices}
+          onDeviceUpdate={updateDevice}
           emptyMessage="All known devices are online"
         />
       </main>

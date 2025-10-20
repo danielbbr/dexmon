@@ -4,7 +4,7 @@ import { devices as devicesApi } from '../services/api';
 import IconSelector from './IconSelector';
 import './DeviceCard.css';
 
-function DeviceCard({ device, onUpdate }) {
+function DeviceCard({ device, onUpdate, onDeviceUpdate }) {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(device.name || '');
   const [selectedIcon, setSelectedIcon] = useState(device.icon || 'default');
@@ -17,7 +17,12 @@ function DeviceCard({ device, onUpdate }) {
     try {
       await devicesApi.update(device.mac, name, selectedIcon);
       setIsEditing(false);
-      onUpdate();
+      // Use optimized update instead of full reload
+      if (onDeviceUpdate) {
+        onDeviceUpdate(device.mac, name, selectedIcon);
+      } else {
+        onUpdate(); // Fallback to full reload if onDeviceUpdate not available
+      }
     } catch (error) {
       console.error('error updating device:', error);
     } finally {

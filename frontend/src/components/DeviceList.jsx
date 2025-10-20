@@ -1,7 +1,7 @@
 import DeviceCard from './DeviceCard';
 import './DeviceList.css';
 
-function DeviceList({ title, devices, onUpdate, emptyMessage, highlight }) {
+function DeviceList({ title, devices, onUpdate, onDeviceUpdate, emptyMessage, highlight }) {
   if (devices.length === 0) {
     return (
       <section className="device-section">
@@ -20,6 +20,7 @@ function DeviceList({ title, devices, onUpdate, emptyMessage, highlight }) {
             key={device.mac}
             device={device}
             onUpdate={onUpdate}
+            onDeviceUpdate={onDeviceUpdate}
           />
         ))}
       </div>
