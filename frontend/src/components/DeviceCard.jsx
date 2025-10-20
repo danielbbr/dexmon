@@ -1,5 +1,5 @@
 // src/components/DeviceCard.jsx
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { devices as devicesApi } from '../services/api';
 import IconSelector from './IconSelector';
 import './DeviceCard.css';
@@ -10,6 +10,7 @@ function DeviceCard({ device, onUpdate }) {
   const [selectedIcon, setSelectedIcon] = useState(device.icon || 'default');
   const [showIconSelector, setShowIconSelector] = useState(false);
   const [saving, setSaving] = useState(false);
+  const iconTriggerRef = useRef(null);
 
   const handleSave = async () => {
     setSaving(true);
@@ -36,6 +37,7 @@ function DeviceCard({ device, onUpdate }) {
       <div className="device-header">
         <div className="device-icon-container">
           <span 
+            ref={iconTriggerRef}
             className="device-icon"
             onClick={() => isEditing && setShowIconSelector(!showIconSelector)}
             style={{ cursor: isEditing ? 'pointer' : 'default' }}
@@ -45,6 +47,7 @@ function DeviceCard({ device, onUpdate }) {
           {showIconSelector && (
             <IconSelector
               selected={selectedIcon}
+              triggerRef={iconTriggerRef}
               onSelect={(icon) => {
                 setSelectedIcon(icon);
                 setShowIconSelector(false);

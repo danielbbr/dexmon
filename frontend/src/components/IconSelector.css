@@ -9,15 +9,16 @@
 }
 
 .icon-selector {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin-top: 8px;
+  position: fixed;
   background: white;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   width: 300px;
+  max-height: 320px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .icon-selector-header {
@@ -59,8 +60,29 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   padding: 16px;
-  max-height: 400px;
+  flex: 1;
   overflow-y: auto;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #f7fafc;
+}
+
+.icon-grid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.icon-grid::-webkit-scrollbar-track {
+  background: #f7fafc;
+  border-radius: 3px;
+}
+
+.icon-grid::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 3px;
+}
+
+.icon-grid::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
 }
 
 .icon-option {
