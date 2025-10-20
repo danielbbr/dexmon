@@ -1,0 +1,57 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: botimon-backend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=${PORT:-3001}
+      - JWT_SECRET=${JWT_SECRET:-your-secret-key-change-in-production}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+      - DB_PATH=${DB_PATH:-/app/data/botimon.db}
+    volumes:
+      - botimon_data:/app/data
+    # use host network for network scanning
+    network_mode: host
+    # required for network scanning
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    security_opt:
+      - seccomp:unconfined
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: botimon-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - botimon_network
+    environment:
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:3001}
+      - VITE_API_PATH=${VITE_API_PATH:-/api}
+    extra_hosts:
+      - "backend:host-gateway"
+
+volumes:
+  botimon_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/data
+
+networks:
+  botimon_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

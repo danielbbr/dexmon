@@ -5,22 +5,27 @@ class DeviceScanner {
   async scan() {
     try {
       const networkRange = await getNetworkRange();
+      console.log('Scanning network range:', networkRange);
       
-      // scan network with nmap
-      const { stdout } = await execAsync(`sudo nmap -sn ${networkRange} -oG -`);
+      // scan network with nmap - more aggressive options
+      const { stdout } = await execAsync(`sudo nmap -sn -T4 -PR ${networkRange} -oG -`);
+      console.log('Nmap raw output:', stdout);
       
       const devices = [];
       const lines = stdout.split('\n');
 
       for (const line of lines) {
         if (line.includes('Host:') && !line.includes('Status: Down')) {
+          console.log('Processing line:', line);
           const device = await this._parseLine(line);
           if (device) {
             devices.push(device);
+            console.log('Added device:', device);
           }
         }
       }
 
+      console.log(`Total devices found: ${devices.length}`);
       return devices;
     } catch (error) {
       console.error('scan error:', error.message);
@@ -44,12 +49,16 @@ class DeviceScanner {
       hostname = hostnameMatch[1];
     }
 
-    // if no mac (localhost), get it from arp
+    // if no mac, try to get it from arp
     if (!mac) {
       mac = await getMacFromArp(ip);
     }
 
-    if (!mac) return null;
+    // if still no mac, create a placeholder or skip
+    if (!mac) {
+      console.log(`No MAC found for ${ip}, skipping`);
+      return null;
+    }
 
     return {
       ip,
