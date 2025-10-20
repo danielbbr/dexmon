@@ -38,18 +38,39 @@ function Dashboard() {
 
   const updateDevice = (mac, name, icon) => {
     setDeviceData(prevData => {
-      const updateDeviceInList = (deviceList) => 
-        deviceList.map(device => 
-          device.mac === mac 
-            ? { ...device, name, icon }
-            : device
-        );
+      // Find the device in unknown list
+      const unknownDeviceIndex = prevData.onlineUnknown.findIndex(device => device.mac === mac);
+      
+      if (unknownDeviceIndex !== -1) {
+        // Device is in unknown list, move it to known list
+        const deviceToMove = prevData.onlineUnknown[unknownDeviceIndex];
+        const updatedDevice = {
+          ...deviceToMove,
+          name,
+          icon,
+          known: true
+        };
+        
+        return {
+          onlineKnown: [...prevData.onlineKnown, updatedDevice],
+          onlineUnknown: prevData.onlineUnknown.filter(device => device.mac !== mac),
+          offlineKnown: prevData.offlineKnown
+        };
+      } else {
+        // Device is already known, just update it
+        const updateDeviceInList = (deviceList) => 
+          deviceList.map(device => 
+            device.mac === mac 
+              ? { ...device, name, icon }
+              : device
+          );
 
-      return {
-        onlineKnown: updateDeviceInList(prevData.onlineKnown),
-        onlineUnknown: updateDeviceInList(prevData.onlineUnknown),
-        offlineKnown: updateDeviceInList(prevData.offlineKnown)
-      };
+        return {
+          onlineKnown: updateDeviceInList(prevData.onlineKnown),
+          onlineUnknown: updateDeviceInList(prevData.onlineUnknown),
+          offlineKnown: updateDeviceInList(prevData.offlineKnown)
+        };
+      }
     });
   };
 
