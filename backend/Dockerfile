@@ -21,13 +21,13 @@ RUN npm ci --only=production
 COPY . .
 
 # Create non-root user for security
-RUN adduser -D -s /bin/sh botimon && \
-    echo 'botimon ALL=(ALL) NOPASSWD: /usr/bin/nmap' >> /etc/sudoers && \
+RUN adduser -D -s /bin/sh dexmon && \
+    echo 'dexmon ALL=(ALL) NOPASSWD: /usr/bin/nmap' >> /etc/sudoers && \
     mkdir -p /app/data && \
-    chown -R botimon:botimon /app
+    chown -R dexmon:dexmon /app
 
 # Switch to non-root user
-USER botimon
+USER dexmon
 
 # Expose port
 EXPOSE 3001

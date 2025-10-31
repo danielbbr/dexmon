@@ -1,13 +1,13 @@
-import Database from 'better-sqlite3';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import fs from 'fs';
+import Database from "better-sqlite3";
+import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // use environment variable for database path, fallback to local path
-const dbPath = process.env.DB_PATH || path.join(__dirname, '../../botimon.db');
+const dbPath = process.env.DB_PATH || path.join(__dirname, "../../dexmon.db");
 
 // ensure data directory exists
 const dataDir = path.dirname(dbPath);

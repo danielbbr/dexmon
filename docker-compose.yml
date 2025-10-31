@@ -3,16 +3,16 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: botimon-backend
+    container_name: dexmon-backend
     restart: unless-stopped
     environment:
       - NODE_ENV=production
       - PORT=${PORT:-3001}
       - JWT_SECRET=${JWT_SECRET:-your-secret-key-change-in-production}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
-      - DB_PATH=${DB_PATH:-/app/data/botimon.db}
+      - DB_PATH=${DB_PATH:-/app/data/dexmon.db}
     volumes:
-      - botimon_data:/app/data
+      - dexmon_data:/app/data
     # use host network for network scanning
     network_mode: host
     # required for network scanning
@@ -27,14 +27,14 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: botimon-frontend
+    container_name: dexmon-frontend
     restart: unless-stopped
     ports:
       - "80:80"
     depends_on:
       - backend
     networks:
-      - botimon_network
+      - dexmon_network
     environment:
       - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:3001}
       - VITE_API_PATH=${VITE_API_PATH:-/api}
@@ -42,7 +42,7 @@ services:
       - "backend:host-gateway"
 
 volumes:
-  botimon_data:
+  dexmon_data:
     driver: local
     driver_opts:
       type: none
@@ -50,7 +50,7 @@ volumes:
       device: ${PWD}/data
 
 networks:
-  botimon_network:
+  dexmon_network:
     driver: bridge
     ipam:
       config:

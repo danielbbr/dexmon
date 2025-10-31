@@ -1,6 +1,4 @@
-# botimon
-
-![botimon screenshot](screenshot.png)
+# dexmon
 
 a network device monitoring browser app for local networks. scan and manage devices connected to your local network.
 
@@ -14,10 +12,10 @@ a network device monitoring browser app for local networks. scan and manage devi
 
 ```bash
 # start the application
-sudo ./botimon.sh start
+sudo ./dexmon.sh start
 
 # view all options
-./botimon.sh --help
+./dexmon.sh --help
 ```
 
 ## requirements
@@ -39,4 +37,4 @@ the application consists of:
 - `backend/` - Node.js api server with SQLite database.
 - `frontend/` - React frontend with Vite
 - `docker-compose.yml` - container orchestration
-- `botimon.sh` - management script
+- `dexmon.sh` - management script

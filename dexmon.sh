@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# botimon Docker Management Script
+# dexmon Docker Management Script
 
 set -e
 
@@ -29,7 +29,7 @@ check_docker() {
         print_error "Docker is not installed. Please install Docker first."
         exit 1
     fi
-    
+
     if ! command -v docker compose &> /dev/null; then
         print_error "Docker Compose is not installed. Please install Docker Compose first."
         exit 1
@@ -58,33 +58,33 @@ setup_env() {
 
 # function to build and start services
 start() {
-    print_status "Starting botimon..."
+    print_status "Starting dexmon..."
     check_docker
     setup_data_dir
     setup_env
-    
+
     print_status "Building and starting containers..."
     docker compose up -d --build
-    
+
     print_status "Waiting for services to be ready..."
     sleep 10
-    
-    print_status "botimon is running!"
+
+    print_status "dexmon is running!"
 }
 
 # function to stop services
 stop() {
-    print_status "Stopping botimon..."
+    print_status "Stopping dexmon..."
     docker compose down
-    print_status "botimon stopped."
+    print_status "dexmon stopped."
 }
 
 # function to restart services
 restart() {
-    print_status "Restarting botimon..."
+    print_status "Restarting dexmon..."
     setup_data_dir
     docker compose restart
-    print_status "botimon restarted."
+    print_status "dexmon restarted."
 }
 
 # function to view logs
@@ -94,7 +94,7 @@ logs() {
 
 # function to show status
 status() {
-    print_status "botimon Status:"
+    print_status "dexmon Status:"
     docker compose ps
 }
 
@@ -114,14 +114,14 @@ clean() {
 
 # function to show help
 help() {
-    echo "botimon Docker Management Script"
+    echo "dexmon Docker Management Script"
     echo ""
     echo "Usage: $0 [COMMAND]"
     echo ""
     echo "Commands:"
-    echo "  start     Start botimon services"
-    echo "  stop      Stop botimon services"
-    echo "  restart   Restart botimon services"
+    echo "  start     Start dexmon services"
+    echo "  stop      Stop dexmon services"
+    echo "  restart   Restart dexmon services"
     echo "  logs      View logs"
     echo "  status    Show service status"
     echo "  clean     Remove all containers and data"
