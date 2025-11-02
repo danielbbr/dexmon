@@ -13,7 +13,7 @@ services:
       - DB_PATH=${DB_PATH:-/app/data/dexmon.db}
     volumes:
       - dexmon_data:/app/data
-    # use host network for network scanning
+    # use host network for network scanning - REQUIRED for nmap to scan the actual LAN
     network_mode: host
     # required for network scanning
     privileged: true
@@ -27,6 +27,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - VITE_API_PATH=/api
     container_name: dexmon-frontend
     restart: unless-stopped
     ports:
@@ -34,12 +36,12 @@ services:
     depends_on:
       - backend
     networks:
-      - dexmon_network
+      dexmon_network:
+        ipv4_address: 172.21.0.10
     environment:
-      - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:3001}
-      - VITE_API_PATH=${VITE_API_PATH:-/api}
-    extra_hosts:
-      - "backend:host-gateway"
+      # Backend is on host network, so nginx proxies to the bridge gateway (host)
+      - BACKEND_HOST=172.21.0.1
+      - BACKEND_PORT=3001
 
 volumes:
   dexmon_data:
@@ -54,4 +56,5 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.20.0.0/16
+        - subnet: 172.21.0.0/16
+          gateway: 172.21.0.1
